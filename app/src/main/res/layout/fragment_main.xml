@@ -44,6 +44,7 @@
             android:inputType="number|textPersonName"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/autoCompleteConvert"
             app:layout_constraintTop_toTopOf="parent" />
@@ -62,6 +63,7 @@
             android:inputType="textShortMessage"
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
+            android:textSize="24sp"
             app:layout_constraintEnd_toStartOf="@+id/etAmount"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
