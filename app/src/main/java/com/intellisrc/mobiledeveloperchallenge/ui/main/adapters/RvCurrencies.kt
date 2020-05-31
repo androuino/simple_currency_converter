@@ -25,8 +25,6 @@ class RvCurrencies internal constructor(
     private val viewModel: MainFragmentViewModel
 ) : CustomRecyclerView() {
     private var context: Context? = null
-    private var conversion = ""
-    private var itemPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         this.context = parent.context
@@ -51,8 +49,7 @@ class RvCurrencies internal constructor(
         return R.layout.rv_currency_items
     }
 
-    fun updateRatesInfo(newList: MutableList<RateDataModel>, activity: Activity?, currencies: String) {
-        conversion = currencies
+    fun updateRatesInfo(newList: MutableList<RateDataModel>, activity: Activity?) {
         val callback = Callback(this.currencyList, newList)
         val diff = getDiff(callback)
             .subscribeOn(Schedulers.newThread())
@@ -67,8 +64,6 @@ class RvCurrencies internal constructor(
         return ioObservable.fromCallable { DiffUtil.calculateDiff(callback) }
     }
 
-    fun getPosition(): Int = itemPosition
-
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val parentLayout: ConstraintLayout = itemView.findViewById(R.id.parentLayout)
         private val tvCurrency: TextView = itemView.findViewById(R.id.tvCurrency)
@@ -78,13 +73,6 @@ class RvCurrencies internal constructor(
             val (currency, rate) = list[position]
             tvCurrency.text = currency
             tvRate.text = rate.toString()
-
-            if (conversion.isNotEmpty() && conversion == currency) {
-                itemPosition = position
-
-            } else {
-                parentLayout
-            }
         }
     }
 

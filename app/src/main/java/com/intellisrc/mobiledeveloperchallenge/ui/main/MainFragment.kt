@@ -20,7 +20,6 @@ import com.intellisrc.mobiledeveloperchallenge.ui.main.adapters.RvCurrencies
 import com.intellisrc.mobiledeveloperchallenge.utils.Preconditions
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
     private var viewModel: MainFragmentViewModel? = null
@@ -66,14 +65,6 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
                 }
             }
         })
-
-        btnReset.setOnClickListener {
-            autoCompleteConvertFrom.text.clear()
-            autoCompleteConvertTo.text.clear()
-            etAmount.text.clear()
-            etResult.text.clear()
-            viewModel?.getHistoricalData()
-        }
     }
 
     private fun observers() {
@@ -82,15 +73,13 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
                 it.let { list ->
                     list.sort()
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, list)
-                    autoCompleteConvertFrom.setAdapter(adapter)
-                    autoCompleteConvertTo.setAdapter(adapter)
+                    autoCompleteConvert.setAdapter(adapter)
                     adapter.notifyDataSetChanged()
                 }
             }
         })
         viewModel?.getHistoricalData?.observe(viewLifecycleOwner, Observer {
             historicalDataList.clear()
-            var combine = ""
             it.quotes.forEach { (k, v) ->
                 if (etAmount.text.isNotEmpty() && etAmount.text.toString().toDouble() != 0.0) {
                     val convert = etAmount.text.toString().toDouble() * v
@@ -99,12 +88,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
                     historicalDataList.add(RateDataModel(k, v))
                 }
             }
-            if (autoCompleteConvertFrom.text.isNotEmpty() && autoCompleteConvertTo.text.isNotEmpty()) {
-                combine = "${autoCompleteConvertFrom.text}${autoCompleteConvertTo.text}"
-
-            }
-            rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity, combine)
-            rvCurrencies.smoothScrollToPosition(rvCurrenciesAdapter?.getPosition()!!)
+            rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity)
         })
     }
 
