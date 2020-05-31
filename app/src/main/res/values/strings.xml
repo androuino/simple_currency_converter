@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Simple FIAT converter</string>
+    <!-- TEXTVIEW -->
+    <string name="currency">FIAT</string>
+    <string name="rate">Rate:</string>
+    <!-- PLAIN TEXT -->
+    <string name="amount">Amount</string>
+    <string name="from_currency">Convert From</string>
+    <string name="to_currency">Convert To</string>
+    <string name="currencies">Currencies</string>
+    <string name="currency_type">Currency</string>
+    <string name="convert_from">Convert from</string>
+    <string name="convert_to">Convert to</string>
+    <string name="result">Result</string>
+    <!-- BUTTON -->
+    <string name="reset">Reset</string>
+    <!-- EXCEPTIONS -->
+    <string name="illegal_argument_exception">Illegal argument exceptions in RvCurrencies</string>
+</resources>

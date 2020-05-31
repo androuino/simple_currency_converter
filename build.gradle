@@ -1,0 +1,159 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.kotlin_version = '1.3.72'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+        maven { url "maven.google.com" }
+        maven { url "https://raw.githubusercontent.com/bit6/bit6-android-sdk/master/releases/" }
+        maven {
+            url "https://cardinalcommerce.bintray.com/android"
+            credentials {
+                username 'braintree-team-sdk@cardinalcommerce'
+                password '220cc9476025679c4e5c843666c27d97cfb0f951'
+            }
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    // android
+    supportLibVersion = "28.0.0"
+    constraintVersion = "1.1.3"
+    androidArchitectureVersion = "1.1.1"
+    // androidx
+    coreKtxVersion = "1.2.0"
+    androidxVersion = "1.1.0"
+    // work
+    workVersion = "2.3.2"
+    // firebase
+    firebaseUiVersion = "6.2.0"
+    firebaseCoreVersion = "17.3.0"
+    firebaseAuthVersion = "19.3.0"
+    firebaseVersion = "19.2.1"
+    fireStoreVersion = "21.4.2"
+    firebaseAnalyticsVersion = "17.3.0"
+    firebaseMessagingVersion = "20.2.0"
+    firebaseFirestoreVersion = "21.4.3"
+    firebaseConfigVersion = "19.1.4"
+    // room
+    roomVersion = "1.1.1"
+    archRoomVersion = "1.0.0-alpha9-1"
+    androidXRoomVersion = "2.2.5"
+    // play service
+    playServicesVersion = "20.0.0"
+    playServicesAuth = "18.0.0"
+    materialVersion = "1.1.0"
+    walletVersion = "18.0.0"
+    // kotlin
+    kotlinVersion = "1.3.60"
+    kotlinReflectVersion = "1.3.61"
+    kotlinCoroutinesVersion = "1.3.3"
+    // dagger
+    daggerVersion = "2.26"
+    // leakCanary
+    leakCanaryVersion = "1.6.2"
+    // okHttp
+    okHttpVersion = "4.3.1"
+    loggingInterceptorVersion = "3.8.1"
+    // material
+    materialDialogsVersion = "0.9.6.0"
+    // RxJava
+    rxAndroidVersion = "3.0.0"
+    rxJavaVersion = "3.0.0"
+    rxLifecycle = "2.2.1"
+    rxReplayingShare = "2.0.1"
+    // facebook stetho
+    stethoVersion = "1.5.1"
+    // Navigation
+    navigationVersion = "1.0.0"
+    // timber
+    timberVersion = "4.7.1"
+    // gson
+    gsonVersion = "2.8.6"
+    // jsr250
+    jsr250Version = "1.0"
+    // view pager indicator
+    viewPagerIndicatorVersion = "2.4.1"
+    // glide version
+    glideVersion = "4.11.0"
+    // circle image view
+    cicleImageViewVersion = "3.1.0"
+    circularImageViewVersion = "4.1.0"
+    // tooltip
+    tooltipVersion = "0.2.3"
+    // simple-stack
+    simpleStackVersion = "2.1.2"
+    // lifecycle
+    lifecycleVersion = "2.2.0"
+    // butterknife
+    butterKnifeVersion = "10.2.1"
+    // auto-value
+    autoValueVersion = "1.7"
+    autoValueIgnoreHashVersion = "1.1.4"
+    // paperParcel
+    paperParcelVersion = "2.0.8"
+    // card form
+    cardFormVersion = "4.2.0"
+    cardIoVersion = "5.5.1"
+    // lifecycle-viewmodel
+    lifecycleViewModel = "2.2.0"
+    // JAXBException
+    jaxBExceptionVersion = "3.0.0-RC1"
+    glassfishVersion = "2.4.0-b180830.0438"
+    // soketio
+    socketIoVersion = "1.0.0"
+    // easy permission
+    easyPermissionVersion = "3.0.0"
+    // smart image picker version
+    smartImagePickerVersion = "1.0.4"
+    // kotlinx
+    kotlinXVersion = "1.3.3"
+    fragmentKTXVersion = "1.2.4"
+    liveDataKtxVersion = "2.2.0"
+    // braintreeVersion
+    braintreeVersion = "3.9.0"
+    dropInVersion = "4.5.0"
+    // retrofit
+    retrofitVersion = "1.9.0"
+    retrofit2Version = "2.9.0"
+    // google gms
+    googleGmsVersion = "17.0.0"
+    playServiceVersion = "12.0.1"
+    // multidex
+    multiDexVersion = "2.0.1"
+    // bit6
+    bit6Version = "0.10.0"
+    // fuel
+    fuelVersion = "2.1.0"
+    // parse server
+    parseVersion = "1.17.3"
+    // parse android sdk
+    parseAndroidSdkVersion = "1.24.1"
+    parseAndroidSdkFcmVersion = "1.22.1"
+    // bolts android
+    boltsAndroidVersion = "1.1.2"
+    // test
+    mockitoVersion = "3.3.3"
+    mockitoKotlinVersion = "0.9.0"
+}
