@@ -82,7 +82,12 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
             historicalDataList.clear()
             it.quotes.forEach { (k, v) ->
                 if (etAmount.text.isNotEmpty() && etAmount.text.toString().toDouble() != 0.0) {
-                    val convert = etAmount.text.toString().toDouble() * v
+                    var convert = 0.0
+                    if (autoCompleteConvert.text.isNotEmpty()) {
+                        if (k.contains(autoCompleteConvert.text))
+                            convert = etAmount.text.toString().toDouble() * v
+                    } else
+                        convert = etAmount.text.toString().toDouble() * v
                     historicalDataList.add(RateDataModel(k, convert))
                 } else {
                     historicalDataList.add(RateDataModel(k, v))
