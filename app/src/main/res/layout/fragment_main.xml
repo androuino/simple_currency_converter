@@ -12,7 +12,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/background_app_default">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCurrencies"
@@ -36,9 +37,13 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:autofillHints=""
+            android:background="@color/colorBlack"
             android:ems="10"
             android:hint="@string/amount"
             android:inputType="number|textPersonName"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/autoCompleteConvert"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,10 +55,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
+            android:background="@color/colorBlack"
             android:completionThreshold="1"
             android:gravity="center_vertical"
             android:hint="@string/currency"
             android:inputType="textShortMessage"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
             app:layout_constraintEnd_toStartOf="@+id/etAmount"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

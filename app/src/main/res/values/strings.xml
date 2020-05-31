@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Simple FIAT converter</string>
     <!-- TEXTVIEW -->
-    <string name="currency">FIAT</string>
+    <string name="currency">FIAT:</string>
     <string name="rate">Rate:</string>
     <!-- PLAIN TEXT -->
     <string name="amount">Amount</string>

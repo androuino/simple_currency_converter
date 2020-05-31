@@ -1,7 +1,7 @@
 package com.intellisrc.mobiledeveloperchallenge.data
 
 data class ConversionDataModel(
-    var success: String = "",
+    var success: Boolean = false,
     var terms: String = "",
     var privacy: String = "",
     var query: Map<String, Any>,

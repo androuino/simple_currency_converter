@@ -29,7 +29,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
         call.enqueue(object : Callback<CurrencyModel> {
             override fun onResponse(call: Call<CurrencyModel>, response: Response<CurrencyModel>) {
                 if (response.isSuccessful) {
-                    RxBus.publish(RxBus.OBJECT, response.body()!!) // FIXME: RxBus is not a good solution
+                    if (response.body()?.success!!)
+                        RxBus.publish(RxBus.OBJECT, response.body()!!) // FIXME: RxBus is not a good solution
                 }
             }
 
@@ -50,7 +51,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
                 response: Response<HistoricalDataModel>
             ) {
                 if (response.isSuccessful) {
-                    RxBus.publish(RxBus.HISTORICAL, response.body()!!)
+                    if (response.body()?.success!!)
+                        RxBus.publish(RxBus.HISTORICAL, response.body()!!)
                 }
             }
 
@@ -72,7 +74,7 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
                 response: Response<ConversionDataModel>
             ) {
                 if (response.isSuccessful) {
-                    Timber.tag(TAG).i("${response.body()?.result}")
+                    if (response.body()?.success!!)
                     RxBus.publish(RxBus.CONVERSION, response.body()!!)
                 }
             }

@@ -1,7 +1,7 @@
 package com.intellisrc.mobiledeveloperchallenge.data
 
 data class HistoricalDataModel(
-    var success: String = "",
+    var success: Boolean = false,
     var terms: String = "",
     var privacy: String = "",
     var historical: Boolean = false,
