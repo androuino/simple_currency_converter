@@ -1,7 +1,5 @@
 package com.intellisrc.mobiledeveloperchallenge.ui.main
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
@@ -10,10 +8,8 @@ import com.intellisrc.mobiledeveloperchallenge.ui.main.repo.CurrencyLayerService
 import com.intellisrc.mobiledeveloperchallenge.utils.RxBus
 import com.zhuinden.simplestack.Backstack
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 class MainFragmentViewModel @Inject constructor(private val backstack: Backstack) : BaseViewModel(), Observer<String> {
     private val liveDataCurrencies = MutableLiveData<ArrayList<String>>()
     private val liveDataHistorical = MutableLiveData<HistoricalDataModel>()
@@ -28,12 +24,18 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
     }
 
     init {
+        /**
+         * Any coroutine launched in this scope is automatically canceled if the ViewModel is cleared
+         */
         viewModelScope.launch {
             getCurrencies()
             getHistoricalData()
         }
     }
 
+    /**
+     * Get currencies as List
+     */
     private fun getCurrencies() {
         if (service != null) {
             currencyLayerImplRepo.getCurrencies(service)
@@ -48,7 +50,9 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /**
+     * Get Historical data and get the quotes Map to get the latest currency rates
+     */
     fun getHistoricalData() {
         if (service != null) {
             currencyLayerImplRepo.getHistoricalData(service)
@@ -59,7 +63,9 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /**
+     * TODO: Conversion doesn't work if not monthly subscribe
+     */
     fun getConversionResult(from: String, to: String, amount: Double) {
         if (service != null) {
             currencyLayerImplRepo.currencyConversion(service, from, to, amount)
@@ -70,7 +76,7 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
     }
 
     override fun onChanged(t: String?) {
-        TODO("Not yet implemented")
+
     }
 
     companion object {

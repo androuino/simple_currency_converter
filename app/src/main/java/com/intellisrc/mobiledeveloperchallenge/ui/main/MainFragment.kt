@@ -1,6 +1,5 @@
 package com.intellisrc.mobiledeveloperchallenge.ui.main
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +17,7 @@ import com.intellisrc.mobiledeveloperchallenge.ui.base.BaseFragment
 import com.intellisrc.mobiledeveloperchallenge.ui.main.adapters.RvCurrencies
 import com.intellisrc.mobiledeveloperchallenge.utils.Preconditions
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
@@ -38,29 +37,24 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
         return viewBinding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         observers()
 
         etAmount.addTextChangedListener(object : TextWatcher {
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                /*if (p0?.isNotEmpty()!!)
-                    viewModel?.getConversionResult("USD", autoCompleteTVCurrencies.text.toString(), etAmount.text.toString().toDouble())*/
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun afterTextChanged(p0: Editable?) {
-                if (etAmount.text.isNotEmpty()) {
-                    viewLifecycleOwner.lifecycleScope.launch {
-                        /*viewModel?.getCurrency?.value?.forEach { currency ->
-                            //viewModel?.getConversionResult("USD", it, etAmount.text.toString().toDouble())
-                        }*/
-                        viewModel?.getHistoricalData()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    delay(1000)
+                    if (etAmount.text.isNotEmpty()) {
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            viewModel?.getHistoricalData()
+                        }
                     }
                 }
             }
@@ -81,13 +75,14 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
         viewModel?.getHistoricalData?.observe(viewLifecycleOwner, Observer {
             historicalDataList.clear()
             it.quotes.forEach { (k, v) ->
-                if (etAmount.text.isNotEmpty() && etAmount.text.toString().toDouble() != 0.0) {
-                    var convert = 0.0
-                    if (autoCompleteConvert.text.isNotEmpty()) {
-                        if (k.contains(autoCompleteConvert.text))
-                            convert = etAmount.text.toString().toDouble() * v
-                    } else
-                        convert = etAmount.text.toString().toDouble() * v
+                if (etAmount.text.isNotEmpty()) {
+                    var amount = 0.0
+                    amount = try {
+                        etAmount.text.toString().toDouble() * v
+                    } catch (ex: Exception) {
+                        v
+                    }
+                    val convert = amount * v
                     historicalDataList.add(RateDataModel(k, convert))
                 } else {
                     historicalDataList.add(RateDataModel(k, v))

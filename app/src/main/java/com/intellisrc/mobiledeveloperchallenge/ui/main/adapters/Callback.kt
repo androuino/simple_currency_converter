@@ -9,7 +9,12 @@ class Callback(
     private val newList: MutableList<RateDataModel>
 ) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].rate == newList[newItemPosition].rate
+        try {
+            return oldList[oldItemPosition].rate == newList[newItemPosition].rate
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return false
     }
 
     override fun getOldListSize(): Int = oldList.size

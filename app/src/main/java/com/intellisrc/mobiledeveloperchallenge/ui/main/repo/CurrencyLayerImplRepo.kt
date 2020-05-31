@@ -1,7 +1,5 @@
 package com.intellisrc.mobiledeveloperchallenge.ui.main.repo
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.intellisrc.mobiledeveloperchallenge.data.ConversionDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
@@ -11,7 +9,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
-import java.time.LocalDateTime
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,8 +28,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
         call.enqueue(object : Callback<CurrencyModel> {
             override fun onResponse(call: Call<CurrencyModel>, response: Response<CurrencyModel>) {
                 if (response.isSuccessful) {
-                    if (response.body()?.success!!)
-                        RxBus.publish(RxBus.OBJECT, response.body()!!) // FIXME: RxBus is not a good solution
+                    //if (response.body()?.success!!)
+                        //RxBus.publish(RxBus.OBJECT, response.body()!!) // FIXME: RxBus is not a good solution
                 }
             }
 
@@ -40,19 +39,18 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun getHistoricalData(service: CurrencyLayerService?) {
         Timber.tag(TAG).d("getHistoricalData")
-        val today = LocalDateTime.now().toLocalDate()
-        val call: Call<HistoricalDataModel> = service?.getHistoricalData(today.toString())!!
+        val today: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val call: Call<HistoricalDataModel> = service?.getHistoricalData(today)!!
         call.enqueue(object : Callback<HistoricalDataModel> {
             override fun onResponse(
                 call: Call<HistoricalDataModel>,
                 response: Response<HistoricalDataModel>
             ) {
                 if (response.isSuccessful) {
-                    if (response.body()?.success!!)
-                        RxBus.publish(RxBus.HISTORICAL, response.body()!!)
+                    //if (response.body()?.success!!)
+                        //RxBus.publish(RxBus.HISTORICAL, response.body()!!)
                 }
             }
 
@@ -63,10 +61,9 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
     }
 
     // FIXME: This doesn't work unless paid access to the API
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun currencyConversion(service: CurrencyLayerService?, from: String, to: String, amount: Double) {
         Timber.tag(TAG).d("currencyConversion")
-        val today = LocalDateTime.now().toLocalDate() // TODO: keep this for Historical conversion
+        val today: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val call: Call<ConversionDataModel> = service?.getConversionResult(from, to, amount)!!
         call.enqueue(object : Callback<ConversionDataModel> {
             override fun onResponse(
@@ -74,8 +71,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
                 response: Response<ConversionDataModel>
             ) {
                 if (response.isSuccessful) {
-                    if (response.body()?.success!!)
-                    RxBus.publish(RxBus.CONVERSION, response.body()!!)
+                    //if (response.body()?.success!!)
+                        //RxBus.publish(RxBus.CONVERSION, response.body()!!)
                 }
             }
 

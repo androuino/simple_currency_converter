@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.StrictMode
-import androidx.annotation.RequiresApi
 import com.intellisrc.mobiledeveloperchallenge.di.component.ApplicationComponent
 import com.intellisrc.mobiledeveloperchallenge.di.component.DaggerApplicationComponent
 import com.intellisrc.mobiledeveloperchallenge.di.modules.AndroidModule
@@ -25,7 +24,6 @@ class App : Application() {
 
     override fun onCreate() {
         if (BuildConfig.DEBUG) {
-
             val threadPolicy =
                 StrictMode.ThreadPolicy.Builder()
                     .detectCustomSlowCalls()
@@ -41,8 +39,6 @@ class App : Application() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 sExecutor = Executors.newSingleThreadExecutor()
-                //threadPolicy.penaltyListener(sExecutor, OnThreadViolationListener { v -> handleViolation(v) })
-                //vmPolicy.penaltyListener(sExecutor, OnVmViolationListener { v -> handleViolation(v) })
             }
 
             StrictMode.setThreadPolicy(threadPolicy.build())
@@ -66,7 +62,6 @@ class App : Application() {
             object : CountDownTimer(1800000, 1000) {
                 override fun onTick(p0: Long) {}
 
-                @RequiresApi(Build.VERSION_CODES.O)
                 override fun onFinish() {
                     Timber.tag(TAG).d("Updating the rates")
                     applicationComponent?.mainFragmentViewModel?.getHistoricalData()

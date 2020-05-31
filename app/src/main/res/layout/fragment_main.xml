@@ -32,7 +32,7 @@
 
         <EditText
             android:id="@+id/etAmount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
@@ -51,10 +51,9 @@
 
         <AutoCompleteTextView
             android:id="@+id/autoCompleteConvert"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
             android:background="@color/colorBlack"
             android:completionThreshold="1"
@@ -64,9 +63,9 @@
             android:textColor="@color/colorWhite"
             android:textColorHint="@color/colorWhite"
             android:textSize="24sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/etAmount"
             app:layout_constraintEnd_toStartOf="@+id/etAmount"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

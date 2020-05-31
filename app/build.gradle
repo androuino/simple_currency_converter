@@ -47,12 +47,12 @@ android {
 dependencies {
     // data binding
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:design:$supportLibVersion"
-    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:design:${supportLibVersion}"
+    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
     implementation "com.android.support:support-annotations:${supportLibVersion}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "android.arch.lifecycle:extensions:$androidArchitectureVersion"
-    implementation "com.android.support.constraint:constraint-layout:$constraintVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation "android.arch.lifecycle:extensions:${androidArchitectureVersion}"
+    implementation "com.android.support.constraint:constraint-layout:${constraintVersion}"
     // firebase
     implementation "com.google.firebase:firebase-messaging:${firebaseMessagingVersion}"
     // unit test
@@ -63,22 +63,22 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
     androidTestImplementation "org.mockito:mockito-android:${mockitoVersion}"
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${kotlinReflectVersion}"
     // Dagger 2
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    compileOnly "javax.annotation:jsr250-api:$jsr250Version"
-    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    compileOnly "javax.annotation:jsr250-api:${jsr250Version}"
+    implementation "com.google.dagger:dagger:${daggerVersion}"
     kapt "com.google.dagger:dagger-android-processor:${daggerVersion}"
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:${daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${daggerVersion}"
     // leak canary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanaryVersion"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}"
     // RxJava
     implementation "io.reactivex.rxjava3:rxjava:${rxJavaVersion}"
-    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:${rxAndroidVersion}"
     // Gson
-    implementation "com.google.code.gson:gson:$gsonVersion"
+    implementation "com.google.code.gson:gson:${gsonVersion}"
     // Websocket
     implementation "com.squareup.okhttp3:logging-interceptor:${loggingInterceptorVersion}"
     // lifecycle
@@ -87,40 +87,37 @@ dependencies {
     // room
     kapt "androidx.room:room-compiler:${androidXRoomVersion}"
     implementation "androidx.room:room-runtime:${androidXRoomVersion}"
-    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:${roomVersion}"
     // Timber
-    implementation "com.jakewharton.timber:timber:$timberVersion"
+    implementation "com.jakewharton.timber:timber:${timberVersion}"
     // Navigation
-    implementation "android.arch.navigation:navigation-ui:$navigationVersion"
-    implementation "android.arch.navigation:navigation-fragment:$navigationVersion"
+    implementation "android.arch.navigation:navigation-ui:${navigationVersion}"
+    implementation "android.arch.navigation:navigation-fragment:${navigationVersion}"
     // view pager indicator
-    implementation "com.github.JakeWharton:ViewPagerIndicator:$viewPagerIndicatorVersion"
+    implementation "com.github.JakeWharton:ViewPagerIndicator:${viewPagerIndicatorVersion}"
     // androidx
-    implementation "androidx.core:core-ktx:$coreKtxVersion"
-    implementation "androidx.recyclerview:recyclerview:$androidxVersion"
+    implementation "androidx.core:core-ktx:${coreKtxVersion}"
+    implementation "androidx.recyclerview:recyclerview:${androidxVersion}"
     // tooltip
-    implementation "com.github.douglasjunior:android-simple-tooltip:$tooltipVersion"
+    implementation "com.github.douglasjunior:android-simple-tooltip:${tooltipVersion}"
     // simple-stack
-    implementation "com.github.Zhuinden:simple-stack:$simpleStackVersion"
+    implementation "com.github.Zhuinden:simple-stack:${simpleStackVersion}"
     // lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-extensions:${lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycleVersion}"
     // butterKnife
-    implementation "com.jakewharton:butterknife:$butterKnifeVersion"
-    kapt "com.jakewharton:butterknife-compiler:$butterKnifeVersion" // annotationProcessor
+    implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}" // annotationProcessor
     // auto-value
-    kapt "com.google.auto.value:auto-value:$autoValueVersion"
-    annotationProcessor "com.google.auto.value:auto-value:$autoValueVersion"
+    kapt "com.google.auto.value:auto-value:${autoValueVersion}"
+    annotationProcessor "com.google.auto.value:auto-value:${autoValueVersion}"
     // paperparcel
     kapt "com.google.android:android:4.1.1.4"
-    kapt "nz.bradcampbell:paperparcel-compiler:$paperParcelVersion"
-    implementation "nz.bradcampbell:paperparcel:$paperParcelVersion"
-    implementation "nz.bradcampbell:paperparcel-api:$paperParcelVersion"
-    implementation "nz.bradcampbell:paperparcel-kotlin:$paperParcelVersion"
-    kapt "com.github.reggar:auto-value-ignore-hash-equals:$autoValueIgnoreHashVersion" // annotationProcessor
-    // JAXBException
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${jaxBExceptionVersion}"
-    implementation "org.glassfish.jaxb:jaxb-runtime:${glassfishVersion}"
+    kapt "nz.bradcampbell:paperparcel-compiler:${paperParcelVersion}"
+    implementation "nz.bradcampbell:paperparcel:${paperParcelVersion}"
+    implementation "nz.bradcampbell:paperparcel-api:${paperParcelVersion}"
+    implementation "nz.bradcampbell:paperparcel-kotlin:${paperParcelVersion}"
+    kapt "com.github.reggar:auto-value-ignore-hash-equals:${autoValueIgnoreHashVersion}" // annotationProcessor
     // kotlinX
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlinXVersion}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlinXVersion}"
@@ -130,9 +127,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofit2Version}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit2Version}"
     implementation "androidx.multidex:multidex:${multiDexVersion}"
-    // fuel
-    implementation "com.github.kittinunf.fuel:fuel:${fuelVersion}"
-    implementation "com.github.kittinunf.fuel:fuel-android:${fuelVersion}"
     // test
     kaptTest "com.google.auto.value:auto-value:${autoValueVersion}"
 }
