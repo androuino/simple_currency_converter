@@ -48,10 +48,12 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
         etAmount.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    delay(1000)
+                    delay(3000)
                     viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
                         historicalDataList.clear()
+                        var position = -1
                         it.forEach { rate ->
+                            ++position
                             var usdRate = 0.0
                             if (rate.currency == "USDUSD")
                                 usdRate = rate.rate!!
@@ -71,6 +73,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
                                     convert = amount.div(todayRate)
                                     fiat = "${autoCompleteConvert.text.toString().toUpperCase()}USD"
                                     historicalDataList.add(RateDataModel(fiat, convert, fiat))
+                                    rvCurrencies.layoutManager?.scrollToPosition(position)
                                 } else {
                                     convert = rate.rate!!
                                     fiat = rate.currency!!

@@ -18,6 +18,7 @@ import com.intellisrc.mobiledeveloperchallenge.ui.main.CustomRecyclerView
 import com.intellisrc.mobiledeveloperchallenge.ui.main.MainFragmentViewModel
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.lang.Exception
 import java.lang.IllegalArgumentException
 import io.reactivex.Observable as ioObservable
 
@@ -69,7 +70,7 @@ class RvCurrencies internal constructor(
     }
 
     private fun getDiff(callback: Callback): ioObservable<DiffUtil.DiffResult> {
-        return ioObservable.fromCallable { DiffUtil.calculateDiff(callback) }
+        return ioObservable.fromCallable { DiffUtil.calculateDiff(callback) } // FIXME: It's crashing here, perhaps I'll encapsulate it with try and catch block
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -82,10 +83,9 @@ class RvCurrencies internal constructor(
             tvCurrency.text = currency
             tvRate.text = rate.toString()
             if (currencyType.isNotEmpty()) {
-                Timber.tag(TAG).i(currencyType)
-                //rvCurrencies.layoutManager?.scrollToPosition(position) // FIXME: this doesn't work as I expecting it to be
-                rvCurrencies.scrollToPosition(position)
-            }
+                parentLayout.setBackgroundResource(R.color.colorRed)
+            } else
+                parentLayout.setBackgroundResource(R.color.colorRvItem)
         }
     }
 

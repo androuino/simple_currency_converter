@@ -9,4 +9,5 @@
     <color name="colorStartGradient">#3B5998</color>
     <color name="colorEndGradient">#1c1e1c</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorRed">#990000</color>
 </resources>

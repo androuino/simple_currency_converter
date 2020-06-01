@@ -3,6 +3,7 @@ package com.intellisrc.mobiledeveloperchallenge.ui.main.adapters
 import androidx.recyclerview.widget.DiffUtil
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.RateDataModel
+import timber.log.Timber
 
 class Callback(
     private val oldList: MutableList<RateDataModel>,
@@ -12,7 +13,7 @@ class Callback(
         try {
             return oldList[oldItemPosition].rate == newList[newItemPosition].rate
         } catch (ex: Exception) {
-            ex.printStackTrace()
+            Timber.tag(TAG).e("Error in areItemsTheSame()->${ex.message}")
         }
         return false
     }
@@ -22,9 +23,17 @@ class Callback(
     override fun getNewListSize(): Int = newList.size
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        val old = oldList[oldItemPosition]
-        val new = newList[newItemPosition]
+        try {
+            val old = oldList[oldItemPosition]
+            val new = newList[newItemPosition]
+            return old.rate == new.rate
+        } catch (ex: Exception) {
+            Timber.tag(TAG).e("Error in areContentsTheSame()->${ex.message}")
+        }
+        return false
+    }
 
-        return old.rate == new.rate
+    companion object {
+        const val TAG = "Callback"
     }
 }
