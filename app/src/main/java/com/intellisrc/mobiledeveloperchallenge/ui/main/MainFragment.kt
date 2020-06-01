@@ -10,7 +10,9 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.intellisrc.mobiledeveloperchallenge.data.LatestRatesDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.RateDataModel
+import com.intellisrc.mobiledeveloperchallenge.data.RatesDataModel
 import com.intellisrc.mobiledeveloperchallenge.databinding.FragmentMainBinding
 import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
 import com.intellisrc.mobiledeveloperchallenge.ui.CustomLinearLayout
@@ -26,7 +28,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
     private var viewModel: MainFragmentViewModel? = null
     private lateinit var viewBinding: FragmentMainBinding
     private var rvCurrenciesAdapter: RvCurrencies? = null
-    private var historicalDataList = ArrayList<RateDataModel>()
+    private var ratesDataList = ArrayList<LatestRatesDataModel>()
     private var ratesEntityList = ArrayList<RatesEntity>()
 
     override fun onCreateView(
@@ -49,7 +51,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     delay(3000)
-                    viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
+                    /*viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
                         historicalDataList.clear()
                         var position = -1
                         it.forEach { rate ->
@@ -84,7 +86,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
                             }
                         }
                         rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity)
-                    })
+                    })*/
                 }
             }
 
@@ -96,27 +98,32 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
     }
 
     private fun observers() {
-        viewModel?.getCurrency?.observe(viewLifecycleOwner, Observer {
-            if (it.size > 0) {
+        viewModel?.getLatestRates?.observe(viewLifecycleOwner, Observer {
+            /*if (it.size > 0) {
                 it.let { list ->
                     list.sort()
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, list)
                     autoCompleteConvert.setAdapter(adapter)
                     adapter.notifyDataSetChanged()
                 }
+            }*/
+            ratesDataList.clear()
+            it.rates.forEach { (k, v) ->
+                ratesDataList.add(LatestRatesDataModel(k, v))
             }
+            rvCurrenciesAdapter?.updateRatesInfo(ratesDataList, activity)
         })
         viewModel?.getHistoricalData?.observe(viewLifecycleOwner, Observer {
-            historicalDataList.clear()
+            /*ratesDataList.clear()
             it.quotes.forEach { (k, v) ->
-                historicalDataList.add(RateDataModel(k, v))
+                ratesDataList.add(LatestRatesDataModel(k, v))
             }
-            rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity)
+            rvCurrenciesAdapter?.updateRatesInfo(ratesDataList, activity)*/
         })
     }
 
     private fun initAdapter() {
-        val list = ArrayList<RateDataModel>(1)
+        val list = ArrayList<LatestRatesDataModel>(1)
         rvCurrenciesAdapter = RvCurrencies(list, viewModel!!)
         rvCurrencies.adapter = rvCurrenciesAdapter
         rvCurrencies.layoutManager = CustomLinearLayout(activity)
@@ -125,7 +132,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel?.getCurrency?.removeObservers(viewLifecycleOwner)
+        viewModel?.getLatestRates?.removeObservers(viewLifecycleOwner)
         viewModel?.getHistoricalData?.removeObservers(viewLifecycleOwner)
     }
 

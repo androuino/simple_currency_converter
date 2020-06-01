@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.intellisrc.mobiledeveloperchallenge.R
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
+import com.intellisrc.mobiledeveloperchallenge.data.LatestRatesDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.RateDataModel
 import com.intellisrc.mobiledeveloperchallenge.ui.main.CustomRecyclerView
 import com.intellisrc.mobiledeveloperchallenge.ui.main.MainFragmentViewModel
@@ -23,7 +24,7 @@ import java.lang.IllegalArgumentException
 import io.reactivex.Observable as ioObservable
 
 class RvCurrencies internal constructor(
-    private val currencyList: MutableList<RateDataModel>,
+    private val currencyList: MutableList<LatestRatesDataModel>,
     private val viewModel: MainFragmentViewModel
 ) : CustomRecyclerView() {
     private var context: Context? = null
@@ -58,7 +59,7 @@ class RvCurrencies internal constructor(
         rvCurrencies = recyclerView
     }
 
-    fun updateRatesInfo(newList: MutableList<RateDataModel>, activity: Activity?) {
+    fun updateRatesInfo(newList: MutableList<LatestRatesDataModel>, activity: Activity?) {
         val callback = Callback(this.currencyList, newList)
         val diff = getDiff(callback)
             .subscribeOn(Schedulers.newThread())
@@ -78,7 +79,7 @@ class RvCurrencies internal constructor(
         private val tvCurrency: TextView = itemView.findViewById(R.id.tvCurrency)
         private val tvRate: TextView = itemView.findViewById(R.id.tvRate)
 
-        fun bind(list: MutableList<RateDataModel>, position: Int) {
+        fun bind(list: MutableList<LatestRatesDataModel>, position: Int) {
             val (currency, rate, currencyType) = list[position]
             tvCurrency.text = currency
             tvRate.text = rate.toString()

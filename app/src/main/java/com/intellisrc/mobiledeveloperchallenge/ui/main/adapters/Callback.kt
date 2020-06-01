@@ -1,17 +1,16 @@
 package com.intellisrc.mobiledeveloperchallenge.ui.main.adapters
 
 import androidx.recyclerview.widget.DiffUtil
-import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
-import com.intellisrc.mobiledeveloperchallenge.data.RateDataModel
+import com.intellisrc.mobiledeveloperchallenge.data.LatestRatesDataModel
 import timber.log.Timber
 
 class Callback(
-    private val oldList: MutableList<RateDataModel>,
-    private val newList: MutableList<RateDataModel>
+    private val oldList: MutableList<LatestRatesDataModel>,
+    private val newList: MutableList<LatestRatesDataModel>
 ) : DiffUtil.Callback() {
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         try {
-            return oldList[oldItemPosition].rate == newList[newItemPosition].rate
+            return oldList[oldItemPosition].rates == newList[newItemPosition].rates
         } catch (ex: Exception) {
             Timber.tag(TAG).e("Error in areItemsTheSame()->${ex.message}")
         }
@@ -26,7 +25,7 @@ class Callback(
         try {
             val old = oldList[oldItemPosition]
             val new = newList[newItemPosition]
-            return old.rate == new.rate
+            return old.rates == new.rates
         } catch (ex: Exception) {
             Timber.tag(TAG).e("Error in areContentsTheSame()->${ex.message}")
         }

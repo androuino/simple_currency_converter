@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.intellisrc.mobiledeveloperchallenge.data.ConversionDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
+import com.intellisrc.mobiledeveloperchallenge.data.RatesDataModel
 import com.intellisrc.mobiledeveloperchallenge.di.Injector
 import com.intellisrc.mobiledeveloperchallenge.room.RoomDataSource
 import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
@@ -24,6 +25,24 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
 
     init {
         Injector.get().inject(this)
+    }
+
+    override fun getLatestRates(service: CurrencyRatesService?) {
+        Timber.tag(TAG).d("getRates")
+        val call: Call<RatesDataModel> = service?.getRates()!!
+        call.enqueue(object : Callback<RatesDataModel> {
+            override fun onResponse(
+                call: Call<RatesDataModel>,
+                response: Response<RatesDataModel>
+            ) {
+                if (response.isSuccessful)
+                    RxBus.publish(RxBus.LATEST_RATES, response.body()!!)
+            }
+
+            override fun onFailure(call: Call<RatesDataModel>, t: Throwable) {
+                Timber.tag(TAG).e("Error on getLatestRates->${t.message}")
+            }
+        })
     }
 
     // Get the list of currency here
