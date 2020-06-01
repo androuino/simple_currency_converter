@@ -3,6 +3,7 @@ package com.intellisrc.mobiledeveloperchallenge.ui.main
 import androidx.lifecycle.*
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
+import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
 import com.intellisrc.mobiledeveloperchallenge.ui.base.BaseViewModel
 import com.intellisrc.mobiledeveloperchallenge.ui.main.repo.CurrencyLayerService
 import com.intellisrc.mobiledeveloperchallenge.utils.RxBus
@@ -59,6 +60,23 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
             RxBus.subscribe((RxBus.HISTORICAL), this) { value ->
                 value as HistoricalDataModel
                 liveDataHistorical.postValue(value)
+                if (roomDataSource.ratesDao().countAll() <= 0) {
+                    value.quotes.forEach { (c, r) ->
+                        val ratesEntity = RatesEntity()
+                        ratesEntity.currency = c
+                        ratesEntity.rate = r
+                        ratesEntity.currencyType = ""
+                        roomDataSource.ratesDao().insert(ratesEntity)
+                    }
+                } else {
+                    value.quotes.forEach { (c, r) ->
+                        val ratesEntity = RatesEntity()
+                        ratesEntity.currency = c
+                        ratesEntity.rate = r
+                        ratesEntity.currencyType = ""
+                        roomDataSource.ratesDao().update(ratesEntity)
+                    }
+                }
             }
         }
     }
@@ -66,13 +84,17 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
     /**
      * TODO: Conversion doesn't work if not monthly subscribe
      */
-    fun getConversionResult(from: String, to: String, amount: Double) {
+    /*fun getConversionResult(from: String, to: String, amount: Double) {
         if (service != null) {
             currencyLayerImplRepo.currencyConversion(service, from, to, amount)
             RxBus.subscribe((RxBus.CONVERSION), this) { value ->
 
             }
         }
+    }*/
+
+    fun getRatesEntity(): LiveData<List<RatesEntity>> {
+        return currencyLayerImplRepo.getRatesEntity()
     }
 
     override fun onChanged(t: String?) {

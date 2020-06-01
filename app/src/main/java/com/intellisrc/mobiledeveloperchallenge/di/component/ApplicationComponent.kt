@@ -5,10 +5,7 @@ import android.content.Context
 import com.intellisrc.mobiledeveloperchallenge.App
 import com.intellisrc.mobiledeveloperchallenge.Service
 import com.intellisrc.mobiledeveloperchallenge.di.ApplicationContext
-import com.intellisrc.mobiledeveloperchallenge.di.modules.AndroidModule
-import com.intellisrc.mobiledeveloperchallenge.di.modules.BackstackModule
-import com.intellisrc.mobiledeveloperchallenge.di.modules.FragmentModule
-import com.intellisrc.mobiledeveloperchallenge.di.modules.SchedulerModule
+import com.intellisrc.mobiledeveloperchallenge.di.modules.*
 import com.intellisrc.mobiledeveloperchallenge.ui.base.BaseActivity
 import com.intellisrc.mobiledeveloperchallenge.ui.base.BaseViewModel
 import com.intellisrc.mobiledeveloperchallenge.ui.main.MainFragmentViewModel
@@ -25,6 +22,7 @@ import javax.inject.Singleton
     FragmentModule::class,
     BackstackModule::class,
     SchedulerModule::class,
+    RoomModule::class,
     AndroidSupportInjectionModule::class
 ])
 interface ApplicationComponent {

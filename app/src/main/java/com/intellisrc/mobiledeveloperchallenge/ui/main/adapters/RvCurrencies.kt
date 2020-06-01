@@ -17,6 +17,7 @@ import com.intellisrc.mobiledeveloperchallenge.data.RateDataModel
 import com.intellisrc.mobiledeveloperchallenge.ui.main.CustomRecyclerView
 import com.intellisrc.mobiledeveloperchallenge.ui.main.MainFragmentViewModel
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.lang.IllegalArgumentException
 import io.reactivex.Observable as ioObservable
 
@@ -25,6 +26,8 @@ class RvCurrencies internal constructor(
     private val viewModel: MainFragmentViewModel
 ) : CustomRecyclerView() {
     private var context: Context? = null
+    private var itemPosition = 0
+    private lateinit var rvCurrencies: RecyclerView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         this.context = parent.context
@@ -49,6 +52,11 @@ class RvCurrencies internal constructor(
         return R.layout.rv_currency_items
     }
 
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        rvCurrencies = recyclerView
+    }
+
     fun updateRatesInfo(newList: MutableList<RateDataModel>, activity: Activity?) {
         val callback = Callback(this.currencyList, newList)
         val diff = getDiff(callback)
@@ -70,11 +78,18 @@ class RvCurrencies internal constructor(
         private val tvRate: TextView = itemView.findViewById(R.id.tvRate)
 
         fun bind(list: MutableList<RateDataModel>, position: Int) {
-            val (currency, rate) = list[position]
+            val (currency, rate, currencyType) = list[position]
             tvCurrency.text = currency
             tvRate.text = rate.toString()
+            if (currencyType.isNotEmpty()) {
+                Timber.tag(TAG).i(currencyType)
+                //rvCurrencies.layoutManager?.scrollToPosition(position) // FIXME: this doesn't work as I expecting it to be
+                rvCurrencies.scrollToPosition(position)
+            }
         }
     }
+
+    fun getItemPosition(): Int = itemPosition
 
     companion object {
         const val TAG = "RvCurrencies"

@@ -8,6 +8,7 @@ import android.os.StrictMode
 import com.intellisrc.mobiledeveloperchallenge.di.component.ApplicationComponent
 import com.intellisrc.mobiledeveloperchallenge.di.component.DaggerApplicationComponent
 import com.intellisrc.mobiledeveloperchallenge.di.modules.AndroidModule
+import com.intellisrc.mobiledeveloperchallenge.di.modules.RoomModule
 import com.squareup.leakcanary.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
@@ -55,6 +56,7 @@ class App : Application() {
         applicationComponent = DaggerApplicationComponent
             .builder()
             .androidModule(AndroidModule(this))
+            .roomModule(RoomModule(this))
             .build()
         applicationComponent?.inject(this)
 

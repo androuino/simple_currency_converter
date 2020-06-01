@@ -3,7 +3,9 @@ package com.intellisrc.mobiledeveloperchallenge
 object Constants {
     const val MAIN_FRAGMENT = 0
 
-    const val CURRENCY_LAYER_API_KEY = "63bf1a57203a091eabd0288c4c622eb7" //"9ee010d5c65e6d8d0601165c3f74d063"
+    const val DATABASE_NAME = "rates.db"
+
+    const val CURRENCY_LAYER_API_KEY = "f715ff4a45f884f9dfb1dbccc8bee0ea"
     const val BASE_URL = "http://api.currencylayer.com/"
     const val LIST = "${BASE_URL}list?access_key=$CURRENCY_LAYER_API_KEY"
     const val LIVE = "${BASE_URL}live?"

@@ -3,6 +3,7 @@ package com.intellisrc.mobiledeveloperchallenge.ui.base
 import androidx.lifecycle.ViewModel
 import com.intellisrc.mobiledeveloperchallenge.Constants
 import com.intellisrc.mobiledeveloperchallenge.di.Injector
+import com.intellisrc.mobiledeveloperchallenge.room.RoomDataSource
 import com.intellisrc.mobiledeveloperchallenge.ui.main.repo.CurrencyLayerImplRepo
 import com.zhuinden.simplestack.Bundleable
 import com.zhuinden.statebundle.StateBundle
@@ -18,6 +19,8 @@ import javax.inject.Inject
 open class BaseViewModel @Inject constructor() : Bundleable, ViewModel() {
     @Inject
     lateinit var currencyLayerImplRepo: CurrencyLayerImplRepo
+    @Inject
+    lateinit var roomDataSource: RoomDataSource
 
     var retrofit: Retrofit? = null
 

@@ -1,9 +1,12 @@
 package com.intellisrc.mobiledeveloperchallenge.ui.main.repo
 
+import androidx.lifecycle.LiveData
 import com.intellisrc.mobiledeveloperchallenge.data.ConversionDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
 import com.intellisrc.mobiledeveloperchallenge.di.Injector
+import com.intellisrc.mobiledeveloperchallenge.room.RoomDataSource
+import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
 import com.intellisrc.mobiledeveloperchallenge.utils.RxBus
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,6 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class CurrencyLayerImplRepo @Inject constructor() : Repository {
+    @Inject
+    lateinit var roomDataSource: RoomDataSource
 
     init {
         Injector.get().inject(this)
@@ -28,8 +33,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
         call.enqueue(object : Callback<CurrencyModel> {
             override fun onResponse(call: Call<CurrencyModel>, response: Response<CurrencyModel>) {
                 if (response.isSuccessful) {
-                    //if (response.body()?.success!!)
-                        //RxBus.publish(RxBus.OBJECT, response.body()!!) // FIXME: RxBus is not a good solution
+                    if (response.body()?.success!!)
+                        RxBus.publish(RxBus.OBJECT, response.body()!!) // FIXME: RxBus is not a good solution
                 }
             }
 
@@ -49,8 +54,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
                 response: Response<HistoricalDataModel>
             ) {
                 if (response.isSuccessful) {
-                    //if (response.body()?.success!!)
-                        //RxBus.publish(RxBus.HISTORICAL, response.body()!!)
+                    if (response.body()?.success!!)
+                        RxBus.publish(RxBus.HISTORICAL, response.body()!!)
                 }
             }
 
@@ -71,8 +76,8 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
                 response: Response<ConversionDataModel>
             ) {
                 if (response.isSuccessful) {
-                    //if (response.body()?.success!!)
-                        //RxBus.publish(RxBus.CONVERSION, response.body()!!)
+                    if (response.body()?.success!!)
+                        RxBus.publish(RxBus.CONVERSION, response.body()!!)
                 }
             }
 
@@ -80,6 +85,10 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
                 Timber.tag(TAG).e("Error in currencyConversion->${t.message}")
             }
         })
+    }
+
+    override fun getRatesEntity(): LiveData<List<RatesEntity>> {
+        return roomDataSource.ratesDao().getRates()
     }
 
     companion object {
