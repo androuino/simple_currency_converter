@@ -123,8 +123,8 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
         rvCurrenciesAdapter?.notifyDataSetChanged()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         viewModel?.getCurrency?.removeObservers(viewLifecycleOwner)
         viewModel?.getHistoricalData?.removeObservers(viewLifecycleOwner)
     }
