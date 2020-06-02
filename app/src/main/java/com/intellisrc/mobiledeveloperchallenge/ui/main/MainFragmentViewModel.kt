@@ -50,15 +50,22 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
             RxBus.subscribe(RxBus.LATEST_RATES, this) {
                 it as RatesDataModel
                 liveDataLatestRates.postValue(it)
-                it.rates.forEach { (k, v) ->
-                    val ratesEntity = RatesEntity()
-                    ratesEntity.currency = k
-                    ratesEntity.rate = v
-                    ratesEntity.currencyType = ""
-                    if (roomDataSource.ratesDao().countAll() > 0)
-                        roomDataSource.ratesDao().update(ratesEntity)
-                    else
+                if (roomDataSource.ratesDao().countAll() != it.rates.size) {
+                    it.rates.forEach { (k, v) ->
+                        val ratesEntity = RatesEntity()
+                        ratesEntity.currency = k
+                        ratesEntity.rate = v
+                        ratesEntity.currencyType = ""
                         roomDataSource.ratesDao().insert(ratesEntity)
+                    }
+                } else {
+                    it.rates.forEach { (k, v) ->
+                        val ratesEntity = RatesEntity()
+                        ratesEntity.currency = k
+                        ratesEntity.rate = v
+                        ratesEntity.currencyType = ""
+                        roomDataSource.ratesDao().update(ratesEntity)
+                    }
                 }
             }
         }

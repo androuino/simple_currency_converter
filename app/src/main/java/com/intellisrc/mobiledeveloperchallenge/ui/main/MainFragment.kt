@@ -52,44 +52,40 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     delay(3000)
-                    if (autoCompleteConvert.text.isNotBlank())
-                        viewModel?.getExchangeRates(autoCompleteConvert.text.toString())
-                    /*viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
-                           historicalDataList.clear()
-                           var position = -1
-                           it.forEach { rate ->
-                               ++position
-                               var usdRate = 0.0
-                               if (rate.currency == "USDUSD")
-                                   usdRate = rate.rate!!
-                               var todayRate = 0.0
-                               var convert = 0.0
-                               val amount = if (etAmount.text.isNotEmpty())
-                                   etAmount.text.toString().toDouble()
-                               else
-                                   0.0
-                               var fiat = ""
+                    viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
+                        Timber.tag(TAG).i("size of ratesentity = ${it.size}")
+                        ratesDataList.clear()
+                        var position = -1
+                        it.forEach { rate ->
+                            ++position
+                            var todayRate = 0.0
+                            var convert = 0.0
+                            val amount = if (etAmount.text.isNotEmpty())
+                                etAmount.text.toString().toDouble()
+                            else
+                                0.0
+                            var fiat = ""
 
-                               if (autoCompleteConvert.text.isNotEmpty() && rate.currency == "USD${autoCompleteConvert.text.toString().toUpperCase()}")
-                                   todayRate = rate.rate!!
+                            if (autoCompleteConvert.text.isNotEmpty() && rate.currency == autoCompleteConvert.text.toString().toUpperCase())
+                                todayRate = rate.rate!!
 
-                               if (todayRate != 0.0 && rate.currency == "USD${autoCompleteConvert.text.toString().toUpperCase()}") {
-                                   if (amount != 0.0) {
-                                       convert = amount.div(todayRate)
-                                       fiat = "${autoCompleteConvert.text.toString().toUpperCase()}USD"
-                                       historicalDataList.add(RateDataModel(fiat, convert, fiat))
-                                       rvCurrencies.layoutManager?.scrollToPosition(position)
-                                   } else {
-                                       convert = rate.rate!!
-                                       fiat = rate.currency!!
-                                       historicalDataList.add(RateDataModel(fiat, convert))
-                                   }
-                               } else {
-                                   historicalDataList.add(RateDataModel(rate.currency!!, rate.rate!!))
-                               }
-                           }
-                           rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity)
-                       })*/
+                            if (todayRate != 0.0 && rate.currency == autoCompleteConvert.text.toString().toUpperCase()) {
+                                if (amount != 0.0) {
+                                    convert = amount.div(todayRate)
+                                    fiat = autoCompleteConvert.text.toString().toUpperCase()
+                                    ratesDataList.add(LatestRatesDataModel(fiat, convert, fiat))
+                                    rvCurrencies.layoutManager?.scrollToPosition(position)
+                                } else {
+                                    convert = rate.rate!!
+                                    fiat = rate.currency!!
+                                    ratesDataList.add(LatestRatesDataModel(fiat, convert))
+                                }
+                            } else {
+                                ratesDataList.add(LatestRatesDataModel(rate.currency!!, rate.rate!!))
+                            }
+                        }
+                        rvCurrenciesAdapter?.updateRatesInfo(ratesDataList, activity)
+                   })
                 }
             }
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
