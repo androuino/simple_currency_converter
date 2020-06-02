@@ -53,7 +53,6 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
                 viewLifecycleOwner.lifecycleScope.launch {
                     delay(3000)
                     viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
-                        Timber.tag(TAG).i("size of ratesentity = ${it.size}")
                         ratesDataList.clear()
                         var position = -1
                         it.forEach { rate ->

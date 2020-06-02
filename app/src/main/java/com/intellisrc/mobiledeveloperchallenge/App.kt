@@ -9,7 +9,7 @@ import com.intellisrc.mobiledeveloperchallenge.di.component.ApplicationComponent
 import com.intellisrc.mobiledeveloperchallenge.di.component.DaggerApplicationComponent
 import com.intellisrc.mobiledeveloperchallenge.di.modules.AndroidModule
 import com.intellisrc.mobiledeveloperchallenge.di.modules.RoomModule
-import com.squareup.leakcanary.BuildConfig
+//import com.squareup.leakcanary.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 import timber.log.Timber
 import java.util.concurrent.ExecutorService
@@ -24,7 +24,7 @@ class App : Application() {
     }
 
     override fun onCreate() {
-        if (BuildConfig.DEBUG) {
+        /*if (BuildConfig.DEBUG) {
             val threadPolicy =
                 StrictMode.ThreadPolicy.Builder()
                     .detectCustomSlowCalls()
@@ -44,7 +44,7 @@ class App : Application() {
 
             StrictMode.setThreadPolicy(threadPolicy.build())
             StrictMode.setVmPolicy(vmPolicy.build())
-        }
+        }*/
         super.onCreate()
         INSTANCE = this
         // leak canary
