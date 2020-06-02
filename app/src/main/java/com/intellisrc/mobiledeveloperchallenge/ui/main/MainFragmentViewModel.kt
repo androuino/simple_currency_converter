@@ -2,6 +2,7 @@ package com.intellisrc.mobiledeveloperchallenge.ui.main
 
 import androidx.lifecycle.*
 import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
+import com.intellisrc.mobiledeveloperchallenge.data.ExchangeRatesDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
 import com.intellisrc.mobiledeveloperchallenge.data.RatesDataModel
 import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
@@ -10,18 +11,23 @@ import com.intellisrc.mobiledeveloperchallenge.ui.main.repo.CurrencyRatesService
 import com.intellisrc.mobiledeveloperchallenge.utils.RxBus
 import com.zhuinden.simplestack.Backstack
 import kotlinx.coroutines.launch
+import okhttp3.internal.connection.Exchange
 import javax.inject.Inject
 
 class MainFragmentViewModel @Inject constructor(private val backstack: Backstack) : BaseViewModel(), Observer<String> {
     private val liveDataLatestRates = MutableLiveData<RatesDataModel>()
     private val liveDataHistorical = MutableLiveData<HistoricalDataModel>()
+    private val liveDataExchangeRates = MutableLiveData<ExchangeRatesDataModel>()
 
     private var service = retrofit?.create(CurrencyRatesService::class.java)
 
-    val getLatestRates = liveDataLatestRates.switchMap {
+    val getLatestRatesData = liveDataLatestRates.switchMap {
         liveData { emit(it) }
     }
     val getHistoricalData = liveDataHistorical.switchMap {
+        liveData { emit(it) }
+    }
+    val getExchangeRatesData = liveDataExchangeRates.switchMap {
         liveData { emit(it) }
     }
 
@@ -41,9 +47,19 @@ class MainFragmentViewModel @Inject constructor(private val backstack: Backstack
     private fun getLatestRates() {
         if (service != null) {
             currencyLayerImplRepo.getLatestRates(service)
-            RxBus.subscribe((RxBus.LATEST_RATES), this) { value ->
-                value as RatesDataModel
-                liveDataLatestRates.postValue(value)
+            RxBus.subscribe(RxBus.LATEST_RATES, this) {
+                it as RatesDataModel
+                liveDataLatestRates.postValue(it)
+            }
+        }
+    }
+
+    fun getExchangeRates(currency: String) {
+        if (service != null) {
+            currencyLayerImplRepo.getExchangeRates(service, currency)
+            RxBus.subscribe(RxBus.EXCHANGE_RATES, this) {
+                it as ExchangeRatesDataModel
+                liveDataExchangeRates.postValue(it)
             }
         }
     }

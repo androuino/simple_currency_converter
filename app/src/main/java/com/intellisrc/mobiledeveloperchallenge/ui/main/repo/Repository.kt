@@ -5,6 +5,7 @@ import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
 
 interface Repository {
     fun getLatestRates(service: CurrencyRatesService?)
+    fun getExchangeRates(service: CurrencyRatesService?, currency: String)
     fun getCurrencies(service: CurrencyLayerService?)
     fun getHistoricalData(service: CurrencyLayerService?)
     fun currencyConversion(service: CurrencyLayerService?, from: String, to: String, amount: Double)

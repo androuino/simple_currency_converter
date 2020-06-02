@@ -30,6 +30,7 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
     private var rvCurrenciesAdapter: RvCurrencies? = null
     private var ratesDataList = ArrayList<LatestRatesDataModel>()
     private var ratesEntityList = ArrayList<RatesEntity>()
+    private var currencyList = ArrayList<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,74 +52,71 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 viewLifecycleOwner.lifecycleScope.launch {
                     delay(3000)
+                    if (autoCompleteConvert.text.isNotBlank())
+                        viewModel?.getExchangeRates(autoCompleteConvert.text.toString())
                     /*viewModel?.getRatesEntity()?.observe(viewLifecycleOwner, Observer {
-                        historicalDataList.clear()
-                        var position = -1
-                        it.forEach { rate ->
-                            ++position
-                            var usdRate = 0.0
-                            if (rate.currency == "USDUSD")
-                                usdRate = rate.rate!!
-                            var todayRate = 0.0
-                            var convert = 0.0
-                            val amount = if (etAmount.text.isNotEmpty())
-                                etAmount.text.toString().toDouble()
-                            else
-                                0.0
-                            var fiat = ""
+                           historicalDataList.clear()
+                           var position = -1
+                           it.forEach { rate ->
+                               ++position
+                               var usdRate = 0.0
+                               if (rate.currency == "USDUSD")
+                                   usdRate = rate.rate!!
+                               var todayRate = 0.0
+                               var convert = 0.0
+                               val amount = if (etAmount.text.isNotEmpty())
+                                   etAmount.text.toString().toDouble()
+                               else
+                                   0.0
+                               var fiat = ""
 
-                            if (autoCompleteConvert.text.isNotEmpty() && rate.currency == "USD${autoCompleteConvert.text.toString().toUpperCase()}")
-                                todayRate = rate.rate!!
+                               if (autoCompleteConvert.text.isNotEmpty() && rate.currency == "USD${autoCompleteConvert.text.toString().toUpperCase()}")
+                                   todayRate = rate.rate!!
 
-                            if (todayRate != 0.0 && rate.currency == "USD${autoCompleteConvert.text.toString().toUpperCase()}") {
-                                if (amount != 0.0) {
-                                    convert = amount.div(todayRate)
-                                    fiat = "${autoCompleteConvert.text.toString().toUpperCase()}USD"
-                                    historicalDataList.add(RateDataModel(fiat, convert, fiat))
-                                    rvCurrencies.layoutManager?.scrollToPosition(position)
-                                } else {
-                                    convert = rate.rate!!
-                                    fiat = rate.currency!!
-                                    historicalDataList.add(RateDataModel(fiat, convert))
-                                }
-                            } else {
-                                historicalDataList.add(RateDataModel(rate.currency!!, rate.rate!!))
-                            }
-                        }
-                        rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity)
-                    })*/
+                               if (todayRate != 0.0 && rate.currency == "USD${autoCompleteConvert.text.toString().toUpperCase()}") {
+                                   if (amount != 0.0) {
+                                       convert = amount.div(todayRate)
+                                       fiat = "${autoCompleteConvert.text.toString().toUpperCase()}USD"
+                                       historicalDataList.add(RateDataModel(fiat, convert, fiat))
+                                       rvCurrencies.layoutManager?.scrollToPosition(position)
+                                   } else {
+                                       convert = rate.rate!!
+                                       fiat = rate.currency!!
+                                       historicalDataList.add(RateDataModel(fiat, convert))
+                                   }
+                               } else {
+                                   historicalDataList.add(RateDataModel(rate.currency!!, rate.rate!!))
+                               }
+                           }
+                           rvCurrenciesAdapter?.updateRatesInfo(historicalDataList, activity)
+                       })*/
                 }
             }
-
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
             override fun afterTextChanged(p0: Editable?) {
             }
         })
     }
 
     private fun observers() {
-        viewModel?.getLatestRates?.observe(viewLifecycleOwner, Observer {
-            /*if (it.size > 0) {
-                it.let { list ->
-                    list.sort()
-                    val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, list)
-                    autoCompleteConvert.setAdapter(adapter)
-                    adapter.notifyDataSetChanged()
-                }
-            }*/
+        viewModel?.getLatestRatesData?.observe(viewLifecycleOwner, Observer {
             ratesDataList.clear()
-            it.rates.forEach { (k, v) ->
+            it.rates.toSortedMap().forEach { (k, v) ->
+                if (currencyList.size <= it.rates.size) {
+                    currencyList.add(k)
+                }
                 ratesDataList.add(LatestRatesDataModel(k, v))
             }
             rvCurrenciesAdapter?.updateRatesInfo(ratesDataList, activity)
+            currencyList.sort()
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, currencyList)
+            autoCompleteConvert.setAdapter(adapter)
+            adapter.notifyDataSetChanged()
         })
-        viewModel?.getHistoricalData?.observe(viewLifecycleOwner, Observer {
-            /*ratesDataList.clear()
-            it.quotes.forEach { (k, v) ->
-                ratesDataList.add(LatestRatesDataModel(k, v))
+        viewModel?.getExchangeRatesData?.observe(viewLifecycleOwner, Observer {
+            it.rates.forEach { (k, v) ->
+                Timber.tag(TAG).i("$k : $v")
             }
-            rvCurrenciesAdapter?.updateRatesInfo(ratesDataList, activity)*/
         })
     }
 
@@ -132,8 +130,8 @@ class MainFragment: BaseFragment<MainFragmentViewModel>(), LifecycleOwner {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel?.getLatestRates?.removeObservers(viewLifecycleOwner)
-        viewModel?.getHistoricalData?.removeObservers(viewLifecycleOwner)
+        viewModel?.getLatestRatesData?.removeObservers(viewLifecycleOwner)
+        viewModel?.getExchangeRatesData?.removeObservers(viewLifecycleOwner)
     }
 
     private fun doCalculation(from: String, to: String, amount: Double) {

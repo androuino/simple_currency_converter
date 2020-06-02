@@ -7,7 +7,8 @@ object Constants {
 
     const val CURRENCY_LAYER_API_KEY = "f715ff4a45f884f9dfb1dbccc8bee0ea"
     const val BASE_URL = "https://api.exchangeratesapi.io/"
-    const val LATEST = "${BASE_URL}latest"
+    const val LATEST = "${BASE_URL}latest?base=USD"
+    const val EXCHANGE_RATES = "${BASE_URL}latest?base=USD&symbols="
     const val LIST = "${BASE_URL}list?access_key=$CURRENCY_LAYER_API_KEY"
     const val LIVE = "${BASE_URL}live?"
     const val HISTORICAL = "${BASE_URL}historical?access_key=$CURRENCY_LAYER_API_KEY"

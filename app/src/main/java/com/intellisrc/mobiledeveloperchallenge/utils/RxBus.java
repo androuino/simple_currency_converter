@@ -26,6 +26,7 @@ public final class RxBus {
   public static final int HISTORICAL = 1;
   public static final int CONVERSION = 2;
   public static final int LATEST_RATES = 3;
+  public static final int EXCHANGE_RATES = 4;
   private static SparseArray<PublishSubject<Object>> sSubjectMap = new SparseArray<>();
   private static Map<Object, CompositeDisposable> sSubscriptionsMap = new HashMap<>();
 
@@ -94,7 +95,7 @@ public final class RxBus {
   }
 
   @Retention(SOURCE)
-  @IntDef({OBJECT, HISTORICAL, CONVERSION, LATEST_RATES})
+  @IntDef({OBJECT, HISTORICAL, CONVERSION, LATEST_RATES, EXCHANGE_RATES})
   @interface Subject {
   }
 }

@@ -1,10 +1,8 @@
 package com.intellisrc.mobiledeveloperchallenge.ui.main.repo
 
 import androidx.lifecycle.LiveData
-import com.intellisrc.mobiledeveloperchallenge.data.ConversionDataModel
-import com.intellisrc.mobiledeveloperchallenge.data.CurrencyModel
-import com.intellisrc.mobiledeveloperchallenge.data.HistoricalDataModel
-import com.intellisrc.mobiledeveloperchallenge.data.RatesDataModel
+import com.intellisrc.mobiledeveloperchallenge.Constants
+import com.intellisrc.mobiledeveloperchallenge.data.*
 import com.intellisrc.mobiledeveloperchallenge.di.Injector
 import com.intellisrc.mobiledeveloperchallenge.room.RoomDataSource
 import com.intellisrc.mobiledeveloperchallenge.room.entity.RatesEntity
@@ -41,6 +39,25 @@ class CurrencyLayerImplRepo @Inject constructor() : Repository {
 
             override fun onFailure(call: Call<RatesDataModel>, t: Throwable) {
                 Timber.tag(TAG).e("Error on getLatestRates->${t.message}")
+            }
+        })
+    }
+
+    override fun getExchangeRates(service: CurrencyRatesService?, currency: String) {
+        Timber.tag(TAG).d("getExchangeRates")
+        val url = "${Constants.EXCHANGE_RATES}USD,$currency"
+        val call: Call<ExchangeRatesDataModel> = service?.getRates(url)!!
+        call.enqueue(object : Callback<ExchangeRatesDataModel> {
+            override fun onResponse(
+                call: Call<ExchangeRatesDataModel>,
+                response: Response<ExchangeRatesDataModel>
+            ) {
+                if (response.isSuccessful)
+                    RxBus.publish(RxBus.EXCHANGE_RATES, response.body()!!)
+            }
+
+            override fun onFailure(call: Call<ExchangeRatesDataModel>, t: Throwable) {
+                Timber.tag(TAG).e("Error on getExchangeRates->${t.message}")
             }
         })
     }
